@@ -3,6 +3,7 @@ message: "Please cite this software if you use or discuss its note format."
 type: software
 title: "Evidence Note: an offline claim/source note editor"
 version: 0.1.0
+date-released: "2026-10-18"
 authors:
   - family-names: Samadi
     given-names: Ahmadreza
