@@ -9,6 +9,8 @@ Record one claim, its source and dates, missing evidence and the next check. Exp
 ## Use it
 
 1. Download the source ZIP from this repository's **Code** menu, or the smaller tool package from **Releases** when available.
+**Current main includes note-replacement protection. The v0.1.0 release archive predates this fix; use the Code source ZIP for the updated tool.**
+
 2. Extract the package and open `index.html` in a browser. No installation, server, account or API key is needed.
 3. Try the fictional example, or fill your own fields. Save JSON before closing or reloading. **Open saved JSON** restores a note locally.
 
@@ -19,6 +21,7 @@ The example's property, source and dates are invented. It is not a company case 
 - Fifteen fields keep the decision, claim, property/record reference, scope, measure, source and three different date roles visible.
 - Recording checks flag blanks, invalid calendar dates, unusual date order and non-HTTP source URLs. They do not assign a truth or quality score.
 - JSON, Markdown and standalone readable HTML exports retain the limits and fictional-example label. HTML also prints without the editor.
+- Loading the example or a valid JSON file asks before replacing a nonempty note. Cancel keeps every current field. Save JSON first if you need to keep both notes.
 - Imports validate the schema, field sizes and relationship values before replacing the current note. Failed imports keep the current note intact.
 - Everything runs in the tab: no automatic requests, analytics, storage or source fetching. Only the author's explicit footer links navigate externally. Source URLs are recorded as literal text.
 
@@ -28,11 +31,12 @@ With Node.js and Python 3 already available:
 
 ```sh
 node test_core.cjs
+node test_replacement.cjs
 python3 -B build.py
 git diff --exit-code -- index.html manifest-sha256.json
 ```
 
-The core suite has 18 cases, including date boundaries, unknown fields, import round trips, multilingual content and escaped exports. Browser export/restore and responsive checks were also performed locally; CI runs the core checks and rebuild, not the browser checks. Rebuilding produces the same self-contained HTML. ZIP container bytes can differ with file timestamps.
+The replacement suite exercises 10 event-handler scenarios using a minimal DOM stub, including cancelled replacement and edits made during an asynchronous file read. It is not a browser test. The core suite has 18 cases, including date boundaries, unknown fields, import round trips, multilingual content and escaped exports. Browser export/restore and responsive checks were also performed locally; CI runs the core checks and rebuild, not the browser checks. Rebuilding produces the same self-contained HTML. ZIP container bytes can differ with file timestamps.
 
 This is an educational note organizer; it does not fetch or independently verify any source. Printed output is not a certified report.
 

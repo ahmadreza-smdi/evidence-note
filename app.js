@@ -14,20 +14,33 @@
   const dl=$('preview-fields');dl.replaceChildren();
   for(const k of controls){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=C.fields[k];dd.textContent=C.value(current,k);dl.append(dt,dd);}
  }
+ let pending=null;
+ function hideReplacement(){pending=null;$('replace-confirm').hidden=true;}
+ function replaceNote(n,label,done){
+  $('clear-confirm').hidden=true;
+  const before=read();
+  const hasContent=before.fictional||controls.some(k=>before[k]!==C.empty()[k]);
+  if(!hasContent){hideReplacement();fill(n);done();return;}
+  pending={note:n,done};
+  $('replace-message').textContent=label+' will replace your current note. Download JSON first if you want to keep it.';
+  $('replace-confirm').hidden=false;$('cancel-replace').focus();
+ }
+ $('cancel-replace').addEventListener('click',()=>{hideReplacement();tell('Replacement cancelled. Current fields were kept.');$('decision').focus();});
+ $('confirm-replace').addEventListener('click',()=>{if(!pending)return;const choice=pending;hideReplacement();fill(choice.note);choice.done();});
  function fill(n){for(const k of controls)$(k).value=n[k];$('fictional').checked=n.fictional;render();}
  function download(name,text,type){const u=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);tell(name+' downloaded. It contains your recorded fields, not a verified conclusion.');}
  form.addEventListener('input',render);form.addEventListener('submit',e=>e.preventDefault());
- $('demo').addEventListener('click',()=>{fill(JSON.parse($('example-data').textContent));tell('Fictional example loaded. Every property, source and date in it is invented.');$('decision').focus();});
- $('clear').addEventListener('click',()=>{$('clear-confirm').hidden=false;$('cancel-clear').focus();});
+ $('demo').addEventListener('click',()=>{replaceNote(JSON.parse($('example-data').textContent),'Loading the fictional example',()=>{tell('Fictional example loaded. Every property, source and date in it is invented.');$('decision').focus();});});
+ $('clear').addEventListener('click',()=>{hideReplacement();$('clear-confirm').hidden=false;$('cancel-clear').focus();});
  $('cancel-clear').addEventListener('click',()=>{$('clear-confirm').hidden=true;$('clear').focus();});
- $('confirm-clear').addEventListener('click',()=>{fill(C.empty());$('clear-confirm').hidden=true;tell('All fields cleared.');$('decision').focus();});
+ $('confirm-clear').addEventListener('click',()=>{hideReplacement();fill(C.empty());$('clear-confirm').hidden=true;tell('All fields cleared.');$('decision').focus();});
  $('markdown').addEventListener('click',()=>download('evidence-note.md',C.markdown(read()),'text/markdown;charset=utf-8'));
  $('json').addEventListener('click',()=>download('evidence-note.json',JSON.stringify(read(),null,2)+'\n','application/json'));
  $('html').addEventListener('click',()=>download('evidence-note.html',C.html(read()),'text/html;charset=utf-8'));
  $('print').addEventListener('click',()=>window.print());
  $('import').addEventListener('change',async e=>{
   const file=e.target.files[0];if(!file)return;
-  try{if(file.size>1048576)throw Error('Use a note no larger than 1 MB.');const n=C.normalize(JSON.parse(await file.text()));fill(n);tell('Note restored locally. Its source links and content have not been verified.');$('decision').focus();}
+  try{if(file.size>1048576)throw Error('Use a note no larger than 1 MB.');const n=C.normalize(JSON.parse(await file.text()));replaceNote(n,'Opening this saved JSON',()=>{tell('Note restored locally. Its source links and content have not been verified.');$('decision').focus();});}
   catch(error){tell('Could not import: '+error.message+' Current fields were kept.');}
   finally{e.target.value='';}
  });

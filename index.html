@@ -8,6 +8,7 @@
 <main><p class="eyebrow">Evidence Note · offline tool</p><h1>Keep the claim.<br>Show the evidence.</h1><p class="intro">Turn one claim into a source note someone else can inspect. Record what the source says, when it was observed and what still needs checking.</p>
 <div class="toolbar" aria-label="Start or restore a note"><button class="btn" id="demo" type="button">Try a fictional example</button><label class="file-label">Open saved JSON<input type="file" id="import" accept="application/json,.json"></label><button class="btn" id="clear" type="button">Clear note</button></div>
 <p class="message" id="message" role="status" aria-live="polite">Works offline. Nothing is sent or saved automatically. Download JSON to keep your work.</p>
+<div id="replace-confirm" class="confirm" role="region" aria-label="Replace current note" hidden><p id="replace-message"></p><button class="btn" type="button" id="cancel-replace">Keep current note</button> <button class="btn" type="button" id="confirm-replace">Replace current note</button></div>
 <div id="clear-confirm" class="confirm" hidden><p>Clear all fields? Download JSON first if you want to keep this note.</p><button class="btn" type="button" id="cancel-clear">Keep editing</button> <button class="btn" type="button" id="confirm-clear">Clear all fields</button></div>
 <div class="layout"><form id="note-form" class="editor"><fieldset><legend>1 · The claim and decision</legend><div class="field"><label for="decision">Decision this informs</label><textarea id="decision" maxlength="6000" rows="3"></textarea></div><div class="field"><label for="claim">Claim to examine</label><textarea id="claim" maxlength="6000" rows="3"></textarea></div><div class="field"><label for="reference">Property or record reference</label><input id="reference" type="text" maxlength="6000" autocomplete="off"></div><div class="field"><label for="scope">Geography, population or scope</label><input id="scope" type="text" maxlength="6000" autocomplete="off"></div><div class="field"><label for="measure">Measure and unit</label><input id="measure" type="text" maxlength="6000" autocomplete="off"></div><label class="check-label"><input type="checkbox" id="fictional">Fictional teaching example</label></fieldset>
 <fieldset><legend>2 · One source, with dates</legend><p class="hint">Publication date is not the same as observation date. Leave unavailable facts blank; the note will say “Not recorded”.</p><div class="field"><label for="sourceTitle">Source title</label><input id="sourceTitle" type="text" maxlength="6000" autocomplete="off"></div><div class="field"><label for="sourceUrl">Source URL</label><input id="sourceUrl" type="text" maxlength="6000" autocomplete="off" inputmode="url" spellcheck="false"></div><div class="field"><label for="publisher">Source publisher</label><input id="publisher" type="text" maxlength="6000" autocomplete="off"></div><div class="field"><label for="observed">Observation date · YYYY-MM-DD</label><input id="observed" type="text" maxlength="6000" autocomplete="off"></div><div class="field"><label for="published">Publication date · YYYY-MM-DD</label><input id="published" type="text" maxlength="6000" autocomplete="off"></div><div class="field"><label for="accessed">Access date · YYYY-MM-DD</label><input id="accessed" type="text" maxlength="6000" autocomplete="off"></div><div class="field"><label for="relation">How does this source relate to the claim?</label><select id="relation"><option value="not_checked">Not checked</option><option value="supports">I recorded: supports</option><option value="contradicts">I recorded: contradicts</option><option value="partly_supports">I recorded: partly supports</option><option value="unclear">I recorded: unclear</option></select></div><div class="field"><label for="excerpt">Relevant source excerpt or observation</label><textarea id="excerpt" maxlength="6000" rows="3"></textarea></div></fieldset>
@@ -185,20 +186,33 @@ if(typeof module!=='undefined')module.exports=NoteCore;
   const dl=$('preview-fields');dl.replaceChildren();
   for(const k of controls){const dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=C.fields[k];dd.textContent=C.value(current,k);dl.append(dt,dd);}
  }
+ let pending=null;
+ function hideReplacement(){pending=null;$('replace-confirm').hidden=true;}
+ function replaceNote(n,label,done){
+  $('clear-confirm').hidden=true;
+  const before=read();
+  const hasContent=before.fictional||controls.some(k=>before[k]!==C.empty()[k]);
+  if(!hasContent){hideReplacement();fill(n);done();return;}
+  pending={note:n,done};
+  $('replace-message').textContent=label+' will replace your current note. Download JSON first if you want to keep it.';
+  $('replace-confirm').hidden=false;$('cancel-replace').focus();
+ }
+ $('cancel-replace').addEventListener('click',()=>{hideReplacement();tell('Replacement cancelled. Current fields were kept.');$('decision').focus();});
+ $('confirm-replace').addEventListener('click',()=>{if(!pending)return;const choice=pending;hideReplacement();fill(choice.note);choice.done();});
  function fill(n){for(const k of controls)$(k).value=n[k];$('fictional').checked=n.fictional;render();}
  function download(name,text,type){const u=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);tell(name+' downloaded. It contains your recorded fields, not a verified conclusion.');}
  form.addEventListener('input',render);form.addEventListener('submit',e=>e.preventDefault());
- $('demo').addEventListener('click',()=>{fill(JSON.parse($('example-data').textContent));tell('Fictional example loaded. Every property, source and date in it is invented.');$('decision').focus();});
- $('clear').addEventListener('click',()=>{$('clear-confirm').hidden=false;$('cancel-clear').focus();});
+ $('demo').addEventListener('click',()=>{replaceNote(JSON.parse($('example-data').textContent),'Loading the fictional example',()=>{tell('Fictional example loaded. Every property, source and date in it is invented.');$('decision').focus();});});
+ $('clear').addEventListener('click',()=>{hideReplacement();$('clear-confirm').hidden=false;$('cancel-clear').focus();});
  $('cancel-clear').addEventListener('click',()=>{$('clear-confirm').hidden=true;$('clear').focus();});
- $('confirm-clear').addEventListener('click',()=>{fill(C.empty());$('clear-confirm').hidden=true;tell('All fields cleared.');$('decision').focus();});
+ $('confirm-clear').addEventListener('click',()=>{hideReplacement();fill(C.empty());$('clear-confirm').hidden=true;tell('All fields cleared.');$('decision').focus();});
  $('markdown').addEventListener('click',()=>download('evidence-note.md',C.markdown(read()),'text/markdown;charset=utf-8'));
  $('json').addEventListener('click',()=>download('evidence-note.json',JSON.stringify(read(),null,2)+'\n','application/json'));
  $('html').addEventListener('click',()=>download('evidence-note.html',C.html(read()),'text/html;charset=utf-8'));
  $('print').addEventListener('click',()=>window.print());
  $('import').addEventListener('change',async e=>{
   const file=e.target.files[0];if(!file)return;
-  try{if(file.size>1048576)throw Error('Use a note no larger than 1 MB.');const n=C.normalize(JSON.parse(await file.text()));fill(n);tell('Note restored locally. Its source links and content have not been verified.');$('decision').focus();}
+  try{if(file.size>1048576)throw Error('Use a note no larger than 1 MB.');const n=C.normalize(JSON.parse(await file.text()));replaceNote(n,'Opening this saved JSON',()=>{tell('Note restored locally. Its source links and content have not been verified.');$('decision').focus();});}
   catch(error){tell('Could not import: '+error.message+' Current fields were kept.');}
   finally{e.target.value='';}
  });

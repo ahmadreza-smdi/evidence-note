@@ -18,7 +18,7 @@ for token,value in repl.items():
  s=s.replace(token,value)
 (P/'index.html').write_text(s)
 if (P/'README.txt').exists():
- names=['index.html','template.html','core.js','app.js','example.json','build.py','README.txt','test_core.cjs','sora-latin-wght.woff2','LICENSE-Sora.txt','monogram.svg']
+ names=['index.html','template.html','core.js','app.js','example.json','build.py','README.txt','test_core.cjs','test_replacement.cjs','sora-latin-wght.woff2','LICENSE-Sora.txt','monogram.svg']
  m={n:hashlib.sha256((P/n).read_bytes()).hexdigest() for n in names};(P/'manifest-sha256.json').write_text(json.dumps(m,indent=2)+'\n')
  with zipfile.ZipFile(P/'evidence-note-builder.zip','w',zipfile.ZIP_DEFLATED) as z:
   for n in [*names,'manifest-sha256.json']:z.write(P/n,n)

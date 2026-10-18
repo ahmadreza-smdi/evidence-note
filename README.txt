@@ -20,10 +20,13 @@ imports keep the current note intact. Download Markdown for a text handoff, or
 readable standalone HTML for a document that opens/prints without the editor.
 Print note uses your own browser's print dialog. Reloading clears unsaved fields.
 Clear note asks once so an accidental click does not discard your draft.
+Loading an example or valid JSON also asks before replacing a nonempty note.
+Choose Keep current note to cancel, or save JSON before replacing it.
 
 Developer source: template.html, app.js, core.js and example.json.
 Run Python 3 build.py to rebuild the self-contained HTML and ZIP. All font and
-monogram bytes are local. Run node test_core.cjs for the pure core checks.
+monogram bytes are local. Run node test_core.cjs for the pure core checks, and
+node test_replacement.cjs for the replacement event-handler checks.
 No dependencies or package installation is required.
 
 The original Sora SIL OFL notice is preserved in LICENSE-Sora.txt and embedded
