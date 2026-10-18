@@ -9,7 +9,7 @@ Record one claim, its source and dates, missing evidence and the next check. Exp
 ## Use it
 
 1. Download the source ZIP from this repository's **Code** menu, or the smaller tool package from **Releases** when available.
-**Current main includes note-replacement protection. The v0.1.0 release archive predates this fix; use the Code source ZIP for the updated tool.**
+**Note-replacement protection is included from v0.1.1. The historical v0.1.0 archive predates this fix.**
 
 2. Extract the package and open `index.html` in a browser. No installation, server, account or API key is needed.
 3. Try the fictional example, or fill your own fields. Save JSON before closing or reloading. **Open saved JSON** restores a note locally.
