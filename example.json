@@ -1,0 +1,16 @@
+{
+  "schema":"ahmadreza-samadi/evidence-note","version":1,"fictional":true,
+  "decision":"Which record needs further investigation before a shortlist is shared?",
+  "claim":"The draft describes the property as a two-bedroom unit.",
+  "reference":"FICTIONAL Example Tower, unit 12B",
+  "scope":"One invented unit; not a building-level observation or a market sample.",
+  "measure":"Bedroom count; no price or valuation.",
+  "sourceTitle":"FICTIONAL unit record used for this exercise",
+  "sourceUrl":"https://example.invalid/records/12b",
+  "publisher":"Fictional source publisher",
+  "observed":"2026-09-17","published":"2026-10-12","accessed":"2026-10-18",
+  "relation":"contradicts",
+  "excerpt":"The invented record says three bedrooms. Its observation date is earlier than the draft review.",
+  "limits":"The claim and source disagree. This note does not establish which is current or whether both records identify the same unit. All names, records and dates in this example are invented.",
+  "nextCheck":"A researcher checks the unit identifier and seeks a dated authoritative record. Keep the field unresolved until the conflict is explained."
+}

@@ -1,0 +1,17 @@
+name: Check offline tool
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Test recording and export rules
+        run: node test_core.cjs
+      - name: Rebuild self-contained HTML and source ZIP
+        run: python3 -B build.py
+      - name: Require exact tracked HTML and manifest
+        run: git diff --exit-code -- index.html manifest-sha256.json

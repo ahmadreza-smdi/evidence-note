@@ -1,0 +1,21 @@
+const assert=require('node:assert/strict'),C=require('./core.js'),example=require('./example.json');let count=0;
+function test(name,fn){fn();count++;console.log('PASS '+name);}
+test('fictional example survives JSON round trip',()=>assert.deepEqual(C.normalize(JSON.parse(JSON.stringify(example))),example));
+test('blank note retains unknowns',()=>{const n=C.empty();assert(C.flags(n).some(s=>s.includes('Observation date')));assert(C.markdown(n).includes('Not recorded'));});
+test('supports never means verified',()=>{const n={...example,relation:'supports'};assert(C.markdown(n).includes('Author-recorded: supports'));assert(C.html(n).includes('does not independently verify'));});
+test('complete fields do not create a verdict',()=>assert(C.markdown(example).includes('not a truth, adequacy or readiness check')));
+test('date must exist in the calendar',()=>{assert(!C.isDate('2026-02-29'));assert(!C.isDate('2026-04-31'));assert(C.isDate('2024-02-29'));});
+test('dates cannot be silently reinterpreted',()=>{assert(!C.isDate('18/10/2026'));assert(!C.isDate('2026-1-1'));});
+test('observation/access conflict remains visible',()=>{assert(C.flags({...example,observed:'2026-10-19'}).some(s=>s.includes('later than access')));});
+test('executable URL schemes are refused',()=>{for(const u of ['javascript:alert(1)','data:text/html,hello','file:///etc/passwd'])assert.equal(C.safeUrl(u),null);});
+test('HTTP sources can be recorded without a fetch',()=>assert.equal(C.safeUrl('https://example.invalid/evidence'),'https://example.invalid/evidence'));
+test('bad schema and versions are refused',()=>{assert.throws(()=>C.normalize({...example,version:2}));assert.throws(()=>C.normalize({...example,schema:'other'}));assert.throws(()=>C.normalize([]));});
+test('mistyped fictional flag is refused',()=>assert.throws(()=>C.normalize({...example,fictional:'false'})));
+test('structured/oversized field injection is refused',()=>{assert.throws(()=>C.normalize({...example,claim:{nested:true}}));assert.throws(()=>C.normalize({...example,claim:'x'.repeat(6001)}));});
+test('relationship enum is validated',()=>assert.throws(()=>C.normalize({...example,relation:'verified'})));
+test('HTML exports keep injected markup inert',()=>{const n={...example,claim:'</dd><script>alert(1)</script><img src=x onerror=alert(2)>'};const h=C.html(n);assert(!h.includes('<script>'));assert(!h.includes('<img'));assert(h.includes('&lt;script&gt;'));});
+test('Markdown records arbitrary text in indented blocks',()=>{const m=C.markdown({...example,claim:'# Injected heading\n<script>alert(1)</script>\n```'});assert(m.includes('    # Injected heading\n    <script>'));assert(m.includes('    ```'));});
+test('multilingual notes round trip without rewording',()=>{const n={...example,claim:'این ادعا هنوز تأیید نشده است. هذا مثال فقط.'};assert.equal(C.normalize(JSON.parse(JSON.stringify(n))).claim,n.claim);assert(C.html(n).includes(n.claim));});
+test('fictional disclosure survives every export',()=>{assert(C.html(example).includes('FICTIONAL TEACHING EXAMPLE'));assert(C.markdown(example).includes('FICTIONAL TEACHING EXAMPLE'));assert(C.normalize(example).fictional);});
+test('maximum-sized valid exported note fits import limit',()=>{const n={...example};for(const k of Object.keys(C.fields))if(k!=='relation')n[k]='\0'.repeat(6000);C.normalize(n);assert(Buffer.byteLength(JSON.stringify(n))<1048576);});
+console.log(count+' meaningful core checks passed. No network or external state.');

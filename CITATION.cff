@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite this software if you use or discuss its note format."
+type: software
+title: "Evidence Note: an offline claim/source note editor"
+version: 0.1.0
+authors:
+  - family-names: Samadi
+    given-names: Ahmadreza
+url: "https://github.com/ahmadreza-smdi/evidence-note"
+repository-code: "https://github.com/ahmadreza-smdi/evidence-note"
+abstract: "A user-recorded evidence-note editor with local export and JSON restore. It does not independently verify claims or sources."
