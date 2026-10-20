@@ -1,0 +1,20 @@
+{
+  "schema": "ahmadreza-samadi/evidence-note",
+  "version": 1,
+  "fictional": true,
+  "decision": "Can this source record be attached to the intended unit in a property shortlist?",
+  "claim": "The record labelled '12B, Lumen' identifies unit 12B in Lumen Court.",
+  "reference": "FICTIONAL intended property: Lumen Court, unit 12B, building LC-07. Candidate source record: LM-21/12B.",
+  "scope": "Two invented buildings share a shortened name and unit label. This is one record-matching exercise, not a real property search.",
+  "measure": "Exact building identifier and unit identifier; no price, valuation or match-probability score.",
+  "sourceTitle": "FICTIONAL candidate record LM-21/12B",
+  "sourceUrl": "https://example.invalid/training/LM-21/12B",
+  "publisher": "Fictional exercise publisher",
+  "observed": "2026-10-08",
+  "published": "2026-10-10",
+  "accessed": "2026-10-20",
+  "relation": "contradicts",
+  "excerpt": "The invented source header reads 'Lumen Mews — building LM-21 — unit 12B'. The intended shortlist entry reads 'Lumen Court — building LC-07 — unit 12B'. A shortened name and matching unit label do not resolve the different building identifiers.",
+  "limits": "The exercise provides conflicting identifiers, but no authoritative crosswalk showing a rename or equivalent IDs. All names, records, URLs and dates are invented. A complete note does not establish that either record is correct or identify the real-world property.",
+  "nextCheck": "The researcher keeps the proposed attachment unresolved and seeks a dated authoritative building/unit reference or identifier crosswalk. Record the evidence for any claimed equivalence before a reviewer approves the attachment."
+}

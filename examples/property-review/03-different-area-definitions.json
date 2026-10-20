@@ -1,0 +1,20 @@
+{
+  "schema": "ahmadreza-samadi/evidence-note",
+  "version": 1,
+  "fictional": true,
+  "decision": "Can a draft compare the two floor-area numbers directly or declare that one is wrong?",
+  "claim": "A 90 m² figure and a 108 m² figure for the same unit must be conflicting measurements.",
+  "reference": "FICTIONAL Marlow Building, unit 6C, record MB-06C.",
+  "scope": "One invented unit with two labelled area figures. Neither a measurement standard nor a jurisdiction-specific definition is assumed.",
+  "measure": "Source A: 90 m² labelled 'internal area'. Source B: 108 m² labelled 'area including balcony'. Detailed inclusion rules and measurement methods are not recorded.",
+  "sourceTitle": "FICTIONAL comparison sheet quoting source labels A and B",
+  "sourceUrl": "https://example.invalid/training/MB-06C/area-comparison",
+  "publisher": "Fictional exercise publisher",
+  "observed": "",
+  "published": "2026-10-18",
+  "accessed": "2026-10-20",
+  "relation": "unclear",
+  "excerpt": "The invented comparison sheet preserves two different labels: 'internal area: 90 m²' and 'area including balcony: 108 m²'. It supplies neither original measurement dates nor detailed measurement boundaries. The sheet's publication date is not a substitute for either missing measurement date.",
+  "limits": "The figures have different stated scopes, so direct comparability is unestablished. Their 18 m² difference does not establish the balcony size: methods, boundaries and dates are unknown. The note intentionally leaves Observation date blank. All figures, records, URLs and other dates are invented.",
+  "nextCheck": "The researcher obtains each original measurement record and records its date, unit, boundaries and definition. A reviewer decides whether the figures are comparable before approving a comparison or identifying a conflict. Keep the missing observation date as 'Not recorded' until evidence supplies it."
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ahmadreza-samadi/evidence-note",
+  "version": 1,
+  "fictional": true,
+  "decision": "Can a draft describe this property estimate as current without further evidence?",
+  "claim": "The estimate is current because its source page was published this month.",
+  "reference": "FICTIONAL Juniper House, unit 4, record JH-04.",
+  "scope": "One invented estimate and its three recorded dates; no market data, current valuation or investment recommendation.",
+  "measure": "Observation date versus page publication date and the date the researcher accessed it. No acceptable-age threshold is assumed.",
+  "sourceTitle": "FICTIONAL estimate summary republished in October",
+  "sourceUrl": "https://example.invalid/training/JH-04/estimate",
+  "publisher": "Fictional exercise publisher",
+  "observed": "2025-11-12",
+  "published": "2026-10-16",
+  "accessed": "2026-10-20",
+  "relation": "unclear",
+  "excerpt": "The invented page is marked 'Published 16 October 2026'. A separate source-data field reads 'Observation date: 12 November 2025'. The exercise gives no later observation or evidence that the estimate was recalculated.",
+  "limits": "The page date alone does not establish the age of its underlying evidence. An old observation does not by itself prove the estimate is wrong; fitness for the intended decision remains unresolved. Every record and date in this exercise is invented. The tool does not choose an acceptable data age or certify a valuation.",
+  "nextCheck": "The reviewer records the decision's freshness requirement, asks which observation and model run the estimate actually uses, and seeks any newer relevant evidence. Until that review is recorded, remove the unsupported 'current' claim from the draft."
+}

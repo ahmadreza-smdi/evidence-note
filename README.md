@@ -16,6 +16,12 @@ Record one claim, its source and dates, missing evidence and the next check. Exp
 
 The example's property, source and dates are invented. It is not a company case study, valuation, model benchmark or professional assessment.
 
+## Work through a property decision
+
+Try the [three property evidence exercises](examples/property-review/README.md): a wrong-property match, an old observation behind a recently published page, and two area figures with different definitions. Each includes an importable JSON note, a readable HTML export, and a specific next check. All records are fictional; the exercises show why a complete form can still leave the decision unresolved.
+
+The [exercise ZIP](examples/property-review/property-review-exercises.zip) works with the existing v0.1.1 editor. It does not replace the original built-in example or require a new version.
+
 ## What it does
 
 - Fifteen fields keep the decision, claim, property/record reference, scope, measure, source and three different date roles visible.
