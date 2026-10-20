@@ -1,6 +1,6 @@
 # Evidence Note
 
-**Keep the claim. Show the evidence.** An offline claim/source note editor by [Ahmadreza Samadi](https://a-samadi.com/about.html), for AI for property decisions.
+**Keep the claim. Show the evidence.** An offline claim/source note editor by [Ahmadreza Samadi](https://a-samadi.com/about.html), for people reviewing evidence before property decisions.
 
 ![Evidence Note editor with a clearly labelled fictional example](docs/preview.png)
 
@@ -54,4 +54,10 @@ The fields apply ideas from the author's essays on [property data enrichment](ht
 
 ## Usage and notices
 
+[Rights notice](LICENSE).
+
 You may download and run this tool locally. No blanket reuse licence is assigned to its original code/content or the author's AS mark. The existing AS mark identifies the author. Sora has its own SIL Open Font License 1.1; the complete original notice is in `LICENSE-Sora.txt` and embedded in the HTML. `README.txt` contains portable usage instructions.
+
+## How to cite
+
+By [Ahmadreza Samadi](https://a-samadi.com/about.html). Cite the specific release or exact commit used: Samadi, Ahmadreza. “Evidence Note.” GitHub, `ahmadreza-smdi/evidence-note`, version/commit, accessed YYYY-MM-DD. Use the repository’s `CITATION.cff` where applicable. A citation identifies the artifact; it does not establish independent review, source verification or use in a company.
